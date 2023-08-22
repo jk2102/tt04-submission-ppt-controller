@@ -23,7 +23,7 @@ documentation:
   author:       "Jurica Kundrata"      # Your name
   title:        "Pulsed Plasma Thruster (PPT) Controller"      # Project title
   language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  ""      # Short description of what your project does
+  description:  "Controller module which generates triggering pulses for a Pulse Plasma Thruster."      # Short description of what your project does
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
