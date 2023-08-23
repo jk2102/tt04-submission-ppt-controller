@@ -54,13 +54,15 @@ module tb_tt_um_jk2102();
         uio_in_tb = 8'hA5;
         #200;
 
+        #1000;
+
         // Deactivate and reset
         ena_tb = 0;
         rst_n_tb = 0;
         #10;
 
         // Finish simulation
-        $finish;
+         $finish;
     end
 
 endmodule
