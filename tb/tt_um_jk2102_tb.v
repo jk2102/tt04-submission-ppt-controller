@@ -47,12 +47,12 @@ module tb_tt_um_jk2102();
         ena_tb = 1;
         ui_in_tb = 8'hAA;
         uio_in_tb = 8'h55;
-        #20;
+        #200;
 
         // Modify inputs
         ui_in_tb = 8'h5A;
         uio_in_tb = 8'hA5;
-        #20;
+        #200;
 
         // Deactivate and reset
         ena_tb = 0;

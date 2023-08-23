@@ -12,18 +12,6 @@ module tt_um_jk2102 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // quick test example
-  reg [7:0] buffer;
-
-  always @ (posedge clk or negedge rst_n)
-    begin
-      if (!rst_n)
-        buffer <= 8'b0;
-      else if(ena)
-        buffer <= ui_in;
-    end
-
-  assign uo_out = buffer;
 
   assign uio_out = 8'b0;
   assign uio_oe = 8'b0;
@@ -33,13 +21,23 @@ module tt_um_jk2102 (
   assign rstn_int  = ena ? rst_n : 1'b0;
 
 // 16-bit clock divider
-
+clock_divider clk_div_inst (
+    .clk      (clock_int),
+    .rst_n    (rstn_int),
+    .sel      (4'd1),
+    .clk_out  (divided_clock)
+);
 
 // I2C slave
 
 
 // synchronizers
-
+synchronizer #(.WIDTH(8)) sync_inst (
+    .clk        (divided_clock),
+    .rst_n      (rstn_int),
+    .in_data    (ui_in),
+    .out_data   (uo_out)
+);
 
 // pulse generator
 
