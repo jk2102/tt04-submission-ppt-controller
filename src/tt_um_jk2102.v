@@ -28,6 +28,24 @@ module tt_um_jk2102 (
   assign uio_out = 8'b0;
   assign uio_oe = 8'b0;
 
+  // if not enable, gate the clock and keep it in reset
+  assign clock_int = ena ? clk : 1'b0;
+  assign rstn_int  = ena ? rst_n : 1'b0;
+
+// 16-bit clock divider
+
+
+// I2C slave
+
+
+// synchronizers
+
+
+// pulse generator
+
+
+// pulse counter
+
 
 
 endmodule
