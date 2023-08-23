@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Assign file names to variables
+verilog_file="../src/tt_um_jk2102.v"
+testbench_file="../tb/tt_um_jk2102_tb.v"
+compiled_output="compiled_output.out"
+vcd_output="simulation_output.vcd"
+
+# Run iverilog
+iverilog -o $compiled_output $verilog_file $testbench_file
+if [ $? -ne 0 ]; then
+    echo "Error during compilation."
+    exit 2
+fi
+
+# Run vvp on the compiled output
+vvp $compiled_output
+if [ $? -ne 0 ]; then
+    echo "Error during simulation execution."
+    exit 3
+fi
+
+# If the resulting VCD file exists, open with gtkwave
+if [ -f $vcd_output ]; then
+    gtkwave $vcd_output
+else
+    echo "VCD file not found."
+    exit 4
+fi
