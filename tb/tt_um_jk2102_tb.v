@@ -49,27 +49,71 @@ module tb_tt_um_jk2102();
         #10 rst_n_tb = 1;
         #10 ena_tb = 1;
         
+        // TEST CASE - TWO WRITES with STOPS
+        // send START pattern
+        #5 sda_out_tb = 1'b0;
+
+        // send ADDR and write access
+        send_byte({7'h5A, 1'b0});
+
+        // send DATA
+        send_byte(8'hCD);
+        
+        // send STOP pattern           
+        #5 scl_out_tb = 1'b0; 
+        #5 sda_out_tb = 1'b0;            
+        #5 scl_out_tb = 1'b1; 
+        #5 sda_out_tb = 1'b1;
+
+        #25;
 
         // send START pattern
         #5 sda_out_tb = 1'b0;
 
-        // send ADDR
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b1; 
+        // send ADDR and write access
+        send_byte({7'h5A, 1'b0});
+
+        // send DATA
+        send_byte(8'hEF);
+
+        // send STOP pattern           
+        #5 scl_out_tb = 1'b0; 
+        #5 sda_out_tb = 1'b0;            
+        #5 scl_out_tb = 1'b1; 
+        #5 sda_out_tb = 1'b1;
+
+        #25;
+
+        // TEST CASE - ONE WRITE, repeated START, ONE READ
+        // send START pattern
+        #5 sda_out_tb = 1'b0;
+
+        // send ADDR and write access
+        send_byte({7'h5A, 1'b0});
+
+        // send DATA
+        send_byte(8'h03);
+
+        #25;
+
+        // send START pattern
         #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b0; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b1; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b0; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b1; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b0; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b1; 
-        #5 scl_out_tb = 1'b1;
-        #5 scl_out_tb = 1'b0; sda_out_tb = 1'b0; 
-        #5 scl_out_tb = 1'b1;
+        #5 sda_out_tb = 1'b0;
+
+        // send ADDR and read access
+        send_byte({7'h5A, 1'b1});
+
+        // send DATA all HIGH data to relase the bus
+        send_byte(8'hFF);
+
+        
+        // send STOP pattern           
+        #5 scl_out_tb = 1'b0; 
+        #5 sda_out_tb = 1'b0;            
+        #5 scl_out_tb = 1'b1; 
+        #5 sda_out_tb = 1'b1;
+
+        #25;
 
 
         #1000;
@@ -82,5 +126,27 @@ module tb_tt_um_jk2102();
         // Finish simulation
          $finish;
     end
+
+    task send_byte;
+        input [7:0] data;
+        integer i;
+
+        // Ensure that the initial condition meets the I2C requirements.
+        // Typically, a START condition is necessary before sending a byte.
+        // Here, we assume that a START condition has been signaled prior to sending the byte.
+
+        begin
+            for(i = 7; i >= 0; i = i - 1) begin
+                #10 scl_out_tb = 1'b0; sda_out_tb = data[i];
+                #10 scl_out_tb = 1'b1;
+            end
+
+            // ACKnowledge            
+            #10 scl_out_tb = 1'b0; sda_out_tb = 1'b1;
+            #10 scl_out_tb = 1'b1;
+            #10 scl_out_tb = 1'b0;
+
+    end
+endtask
 
 endmodule

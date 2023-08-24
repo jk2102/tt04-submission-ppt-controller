@@ -11,10 +11,11 @@ module i2c_slave(
         IDLE            = 3'b000,
         START           = 3'b001,
         ADDR            = 3'b010,
-        ACK             = 3'b011,
+        ACK_ADDR        = 3'b011,
         READ            = 3'b100,
         WRITE           = 3'b101,
-        STOP            = 3'b110;
+        ACK_DATA        = 3'b110,
+        STOPorSTART     = 3'b111;
 
 
     // Start pattern detection
@@ -44,46 +45,44 @@ module i2c_slave(
 
     // Repeated start ???
 
-    reg [7:0] slave_address = 8'hAA; // Define your slave address here
+    reg [6:0] slave_address = 8'h5A; // Define your slave address here
     reg [7:0] data_in;
-    reg [7:0] data_out;
+    reg [7:0] data_out = 8'hBE;
     reg sda_read;
-    reg sda_reg;
 
-    reg [2:0] bit_count = 3'b000;
+    reg [2:0] bit_count = 3'b111;
     reg [2:0] next_bit_count;
     reg [2:0] state, next_state;
 
-    always @(posedge scl or negedge rstn) begin
-            if (!rstn) begin
-                sda_reg <= sda; 
-            end else begin
-                sda_reg <= sda; 
-            end
+    always @(negedge scl or negedge rstn) begin
+        if (!rstn) begin
+            state <= IDLE;
+            bit_count <= 3'b111;
+            sda_out <= 1'b1; // High by default
+        end else begin
+            state <= next_state;
+            bit_count <= next_bit_count;
+            // data setting
+            sda_out <= sda_read;
         end
+    end
 
     always @(posedge scl or negedge rstn) begin
         if (!rstn) begin
-            state <= IDLE;
-            sda_out <= 1'b1; // High by default
-            bit_count <= 3'b000;
+            data_in <= 8'b0;
         end else begin
-            state <= next_state;
-            sda_out <= sda_read;
-            bit_count <= next_bit_count;
-
-            if (state == ADDR)
+            // data capturing
+            if ( (state == ADDR) | (state == WRITE)) data_in[bit_count] <= sda;
         end
     end
 
     always @(state, sda, bit_count, data_in, data_out, start_pattern, stop_pattern) begin
         case(state)
             IDLE: begin
+                sda_read = 1;
                 if (start_pattern) begin
                     next_state = ADDR;
-                    next_bit_count = 3'b000;
-                    data_in[bit_count] = sda_reg;
-                    next_bit_count = bit_count + 1;
+                    next_bit_count = 3'b111;
                 end else begin
                     next_state = IDLE;
                 end
@@ -96,49 +95,72 @@ module i2c_slave(
             end
 
             ADDR: begin
-                data_in[bit_count] = sda_reg;
-                if (bit_count == 3'b111) begin
-                    if (data_in == slave_address) begin
-                        next_state = ACK;
+                sda_read = 1;
+                if (bit_count == 3'b000) begin
+                    if (data_in[7:1] == slave_address) begin
+                        next_state = ACK_ADDR;
+                        sda_read = 0; // Acknowledge by pulling line low
+                        next_bit_count = 3'b111;
                     end else begin
                         next_state = IDLE;
                     end
                 end else begin
-                    next_bit_count = bit_count + 1;
+                    next_bit_count = bit_count - 1;
                     next_state = ADDR;
                 end
             end
 
-            ACK: begin
-                sda_read = 0; // Acknowledge by pulling line low
-                next_state = (data_in[0] == 1'b0) ? WRITE : READ; 
+            ACK_ADDR: begin
+                sda_read = 1; // release SDA line from ACK
+                if (data_in[0] == 1'b0) begin
+                    next_state =  WRITE;
+                end else begin
+                    next_state =  READ;
+                    sda_read = data_out[bit_count];
+                    next_bit_count = bit_count - 1; 
+                end
             end
 
             READ: begin
                 sda_read = data_out[bit_count];
-                if (bit_count == 3'b111) begin
-                    next_state = STOP;
+                if (bit_count == 3'b000) begin
+                    next_state = STOPorSTART;
                 end else begin
-                    next_bit_count = bit_count + 1;
+                    next_bit_count = bit_count - 1;
                     next_state = READ;
                 end
             end
 
             WRITE: begin
-                data_out[bit_count] = sda_reg;
-                if (bit_count == 3'b111) begin
-                    next_state = STOP;
+                sda_read = 1;
+                if (bit_count == 3'b000) begin
+                    next_state = ACK_DATA;
+                    sda_read = 0; // Acknowledge by pulling line low
                 end else begin
-                    next_bit_count = bit_count + 1;
+                    next_bit_count = bit_count - 1;
                     next_state = WRITE;
                 end
             end
+            
+            ACK_DATA: begin
+                sda_read = 1; // release SDA line from ACK
+                next_state = STOPorSTART;
+            end
 
-            STOP: begin
-                if (stop_pattern) begin
+            STOPorSTART: begin
+                sda_read = 1;
+                if (start_pattern & stop_pattern) begin
+                    next_state = ADDR;
+                    next_bit_count = 3'b111;
+                end else if (stop_pattern) begin
                     next_state = IDLE;
+                    next_bit_count = 3'b111;
+                end else
+                if (start_pattern) begin
+                    next_state = ADDR;
+                    next_bit_count = 3'b111;
                 end else begin
-                    next_state = STOP;
+                    next_state = STOPorSTART;
                 end
             end
 
