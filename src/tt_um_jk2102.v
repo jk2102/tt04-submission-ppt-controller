@@ -12,12 +12,12 @@ module tt_um_jk2102 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+// wires
+wire scl, sda, sda_out;
 
-  assign uio_out = 8'b0;
-  assign uio_oe = 8'b0;
 
-  // if not enable, keep in reset
-  assign rstn_int  = ena ? rst_n : 1'b0;
+// if not enable, keep in reset
+assign rstn_int  = ena ? rst_n : 1'b0;
 
 wire div_clk;
 wire [15:0] top_count;
@@ -31,7 +31,12 @@ clock_divider clk_div_inst (
 );
 
 // I2C slave
-
+i2c_slave i2c_slave_inst (
+    .scl        (scl),     // Clock line
+    .sda        (sda),     // Data line
+    .sda_out    (sda_out), // Output data
+    .rstn       (rstn_int)
+);
 
 // synchronizers
 synchronizer #(.WIDTH(8)) sync_inst (
@@ -62,6 +67,22 @@ pulse_counter pulse_counter_inst (
 
 // control logic
 
+
+
+// IO port
+
+// inputs definition
+assign scl = uio_in[0];
+assign sda = uio_in[1];
+
+// outputs definition
+// uio[1] is sda - bidir
+assign uio_out    = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, sda_out, 1'b0};
+
+// output enable definition
+// uio[0] is scl - input
+// uio[1] is sda - bidir --> needs to activate only when SDA is low
+assign uio_oe     = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, !sda_out, 1'b0};
 
 
 endmodule
