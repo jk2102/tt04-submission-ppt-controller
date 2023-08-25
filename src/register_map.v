@@ -19,9 +19,7 @@ module register_map (
 
 );
 
-    // Declare a 16-location byte-wide memory array
-    reg [7:0] memory [10:0];
-
+    // Declare the rgisters
     reg [4:0] CLK_DIV;
     reg [7:0] PERIOD_L;
     reg [7:0] PERIOD_H;
@@ -38,27 +36,27 @@ module register_map (
         if (!rstn) begin
             // deafult values
             // ensure basic functionality if I2C interface is not working
-            CLK_DIV <= 5'd9;      // CLK_DIV  --> With OSC 32k768 --> f = 32 Hz
-            PERIOD_L <= 8'd128;    // PERIOD_L --> 128 --> F_PPT = 0.25 Hz
-            PERIOD_H <= 8'd0;      // PERIOD_H --> 0
-            WIDTH_L <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
-            WIDTH_H <= 8'd0;      // WIDTH_H  --> 0 
-            COUNT_L <= 8'd16;     // COUNT_L  --> 16 firings
-            COUNT_H <= 8'd0;      // COUNT_H  --> 
-            RUN <= 8'd0;      // RUN      --> 1 --> fallback if I2C not working
+            CLK_DIV     <= 5'd9;      // CLK_DIV  --> With OSC 32k768 --> f = 32 Hz
+            PERIOD_L    <= 8'd128;    // PERIOD_L --> 128 --> F_PPT = 0.25 Hz
+            PERIOD_H    <= 8'd0;      // PERIOD_H --> 0
+            WIDTH_L     <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
+            WIDTH_H     <= 8'd0;      // WIDTH_H  --> 0 
+            COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
+            COUNT_H     <= 8'd0;      // COUNT_H  --> 
+            RUN         <= 1'd1;      // RUN      --> 1 --> fallback if I2C not working
             COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
             COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
-            DONE <= 8'd0;     // DONE
+            DONE        <= 1'd0;     // DONE
         end else if (write_enable) begin
             case(address) 
-                4'h0:       CLK_DIV <= data_in;
-                4'h1:       PERIOD_L <= data_in;
-                4'h2:       PERIOD_H <= data_in;
-                4'h3:       WIDTH_L <= data_in;
-                4'h4:       WIDTH_H <= data_in;
-                4'h5:       COUNT_L <= data_in;
-                4'h6:       COUNT_H <= data_in;
-                4'h7:       RUN <= data_in;
+                4'h0:       CLK_DIV     <= data_in;
+                4'h1:       PERIOD_L    <= data_in;
+                4'h2:       PERIOD_H    <= data_in;
+                4'h3:       WIDTH_L     <= data_in;
+                4'h4:       WIDTH_H     <= data_in;
+                4'h5:       COUNT_L     <= data_in;
+                4'h6:       COUNT_H     <= data_in;
+                4'h7:       RUN         <= data_in;
 
                 default:    ;
             endcase
