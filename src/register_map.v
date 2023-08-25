@@ -3,7 +3,7 @@
 module register_map (
     input [3:0] address,   // 4-bit address for 16 locations
     input [7:0] data_in,   // 8-bit data input
-    output [7:0] data_out, // 8-bit data output
+    output reg [7:0] data_out, // 8-bit data output
     input write_enable,    // write enable signal
     input clk,              // clock signal
     input rstn,
@@ -54,7 +54,14 @@ module register_map (
     end
 
     // read towards the I2C interface
-    assign data_out = memory[address];
+    always @(posedge clk or negedge rstn) begin
+        if (!rstn) 
+            data_out <= 8'b0;
+        else
+            data_out <= memory[address];
+
+    end
+
 
     // read towards PPT controller
     assign clk_div  = memory[4'h0][4:0];
