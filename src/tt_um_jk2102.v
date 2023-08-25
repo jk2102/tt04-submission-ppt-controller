@@ -17,11 +17,12 @@ module tt_um_jk2102 (
 
     wire [7:0] reg_data_in, reg_data_out, reg_data_addr;
     wire [15:0] period, width, count_done, count;
-    wire reg_write, run_controller;
+    wire reg_write, run_controller, run_ppt, done, pulse_out;
     wire [4:0] clk_div;
 
 
     // if not enable, keep in reset
+    wire rstn_int;
     assign rstn_int  = ena ? rst_n : 1'b0;
 
     wire div_clk;
@@ -68,13 +69,6 @@ module tt_um_jk2102 (
         .done           (done)
     );
 
-    // synchronizers
-    synchronizer #(.WIDTH(8)) sync_inst (
-        .clk        (div_clk),
-        .rst_n      (rstn_int),
-        .in_data    (top_count[15:8]),
-        .out_data   (uo_out)
-    );
 
     // pulse generator
     pulse_generator pulse_gen_inst (
@@ -97,7 +91,9 @@ module tt_um_jk2102 (
 
     // control logic
     assign run_controller = ena & run_ppt;
+    assign done = 1'b0;
 
+    assign uo_out = 8'b0;
 
     // IO port
 

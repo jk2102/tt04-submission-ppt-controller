@@ -51,7 +51,7 @@ module i2c_slave(
 
     // Repeated start ???
 
-    reg [6:0] slave_address = 8'h5A; // Define your slave address here
+    reg [6:0] slave_address = 7'h5A; // Define your slave address here
     reg [7:0] data_in;
     reg [7:0] data_out;
     reg reg_addr_or_data;
@@ -66,6 +66,8 @@ module i2c_slave(
             state <= IDLE;
             bit_count <= 3'b111;
             sda_out <= 1'b1; // High by default
+
+            data_out <= 8'b0;
 
             reg_data_addr   <= 8'b0;
             reg_data_out    <= 8'b0;
@@ -101,6 +103,7 @@ module i2c_slave(
         end
     end
 
+    // capture SDA on posedge of SCL
     always @(posedge scl or negedge rstn) begin
         if (!rstn) begin
             data_in <= 8'b0;
@@ -200,6 +203,7 @@ module i2c_slave(
 
             default: begin
                 next_state = IDLE;
+                next_bit_count = 3'b111;
             end
         endcase
     end

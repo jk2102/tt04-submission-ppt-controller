@@ -8,7 +8,6 @@ project:
   source_files:        
     - tt_um_jk2102.v
     - clock_divider.v
-    - synchronizer.v
     - pulse_generator.v
     - pulse_counter.v
     - i2c_slave.v
