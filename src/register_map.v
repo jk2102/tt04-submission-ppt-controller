@@ -3,7 +3,7 @@
 module register_map (
     input [3:0] address,   // 4-bit address for 16 locations
     input [7:0] data_in,   // 8-bit data input
-    output reg [7:0] data_out, // 8-bit data output
+    output [7:0] data_out, // 8-bit data output
     input write_enable,    // write enable signal
     input clk,              // clock signal
     input rstn,
@@ -22,47 +22,75 @@ module register_map (
     // Declare a 16-location byte-wide memory array
     reg [7:0] memory [10:0];
 
+    reg [4:0] CLK_DIV;
+    reg [7:0] PERIOD_L;
+    reg [7:0] PERIOD_H;
+    reg [7:0] WIDTH_L;
+    reg [7:0] WIDTH_H;
+    reg [7:0] COUNT_L;
+    reg [7:0] COUNT_H;
+    reg       RUN;
+    reg [7:0] COUNT_DONE_L;
+    reg [7:0] COUNT_DONE_H;
+    reg       DONE;
+
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
             // deafult values
             // ensure basic functionality if I2C interface is not working
-            memory[0] <= 8'd9;      // CLK_DIV  --> With OSC 32k768 --> f = 32 Hz
-            memory[1] <= 8'd128;    // PERIOD_L --> 128 --> F_PPT = 0.25 Hz
-            memory[2] <= 8'd0;      // PERIOD_H --> 0
-            memory[3] <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
-            memory[4] <= 8'd0;      // WIDTH_H  --> 0 
-            memory[5] <= 8'd16;     // COUNT_L  --> 16 firings
-            memory[6] <= 8'd0;      // COUNT_H  --> 
-            memory[7] <= 8'd0;      // RUN      --> 1 --> fallback if I2C not working
-            memory[8] <= 8'd0;      // COUNT_DONE_L 
-            memory[9] <= 8'd0;      // COUNT_DONE_H 
-            memory[10] <= 8'd0;     // DONE
+            CLK_DIV <= 5'd9;      // CLK_DIV  --> With OSC 32k768 --> f = 32 Hz
+            PERIOD_L <= 8'd128;    // PERIOD_L --> 128 --> F_PPT = 0.25 Hz
+            PERIOD_H <= 8'd0;      // PERIOD_H --> 0
+            WIDTH_L <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
+            WIDTH_H <= 8'd0;      // WIDTH_H  --> 0 
+            COUNT_L <= 8'd16;     // COUNT_L  --> 16 firings
+            COUNT_H <= 8'd0;      // COUNT_H  --> 
+            RUN <= 8'd0;      // RUN      --> 1 --> fallback if I2C not working
+            COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
+            COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
+            DONE <= 8'd0;     // DONE
         end else if (write_enable) begin
-            memory[address] <= data_in;
+            case(address) 
+                4'h0:       CLK_DIV <= data_in;
+                4'h1:       PERIOD_L <= data_in;
+                4'h2:       PERIOD_H <= data_in;
+                4'h3:       WIDTH_L <= data_in;
+                4'h4:       WIDTH_H <= data_in;
+                4'h5:       COUNT_L <= data_in;
+                4'h6:       COUNT_H <= data_in;
+                4'h7:       RUN <= data_in;
+
+                default:    ;
+            endcase
+
         end else begin
             // refresh with PPT controller side data
-            memory[4'h8] <= count_done[7:0];
-            memory[4'h9] <= count_done[15:8];
-            memory[4'hA] <= {7'b0, done};
+            COUNT_DONE_L    <= count_done[7:0];
+            COUNT_DONE_H    <= count_done[15:8];
+            DONE            <= done;
         end
     end
 
-    // read towards the I2C interface
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) 
-            data_out <= 8'b0;
-        else
-            data_out <= memory[address];
-
-    end
-
+    // read towards the I2C interface   
+    assign data_out =   (address == 4'h0) ? CLK_DIV :
+                        (address == 4'h1) ? PERIOD_L :
+                        (address == 4'h2) ? PERIOD_H :
+                        (address == 4'h3) ? WIDTH_L :
+                        (address == 4'h4) ? WIDTH_H :
+                        (address == 4'h5) ? COUNT_L :
+                        (address == 4'h6) ? COUNT_H :             
+                        (address == 4'h7) ? RUN :
+                        (address == 4'h8) ? COUNT_DONE_L :
+                        (address == 4'h9) ? COUNT_DONE_H :
+                        (address == 4'hA) ? DONE :
+                        8'b0;
 
     // read towards PPT controller
-    assign clk_div  = memory[4'h0][4:0];
-    assign period   = {memory[4'h2], memory[4'h1]};
-    assign width    = {memory[4'h4], memory[4'h3]};
-    assign count    = {memory[4'h6], memory[4'h5]};
-    assign run_ppt  = memory[4'h7][0];
+    assign clk_div  = CLK_DIV;
+    assign period   = {PERIOD_H, PERIOD_L};
+    assign width    = {WIDTH_H, WIDTH_L};
+    assign count    = {COUNT_H, COUNT_L};
+    assign run_ppt  = RUN;
 
 
 endmodule
