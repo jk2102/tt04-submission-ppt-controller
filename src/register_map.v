@@ -20,7 +20,7 @@ module register_map (
 );
 
     // Declare a 16-location byte-wide memory array
-    reg [7:0] memory [15:0];
+    reg [7:0] memory [10:0];
 
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
@@ -37,11 +37,6 @@ module register_map (
             memory[8] <= 8'd0;      // COUNT_DONE_L 
             memory[9] <= 8'd0;      // COUNT_DONE_H 
             memory[10] <= 8'd0;     // DONE
-            memory[11] <= 8'd0;     // TBD
-            memory[12] <= 8'd0;     // TBD
-            memory[13] <= 8'd0;     // TBD
-            memory[14] <= 8'd0;     // TBD
-            memory[15] <= 8'd0;     // TBD
         end else if (write_enable) begin
             memory[address] <= data_in;
         end else begin
