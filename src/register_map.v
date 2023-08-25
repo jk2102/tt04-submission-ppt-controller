@@ -47,9 +47,9 @@ module register_map (
             memory[address] <= data_in;
         end else begin
             // refresh with PPT controller side data
-            memory[4'h8] <= count_done[7:0];
-            memory[4'h9] <= count_done[15:8];
-            memory[4'hA] <= {7'b0, done};
+            // memory[4'h8] <= count_done[7:0];
+            // memory[4'h9] <= count_done[15:8];
+            // memory[4'hA] <= {7'b0, done};
         end
     end
 
