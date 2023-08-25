@@ -15,7 +15,7 @@ module i2c_slave(
 
     localparam [2:0] 
         IDLE            = 3'b000,
-        START           = 3'b001,
+        // START           = 3'b001,
         ADDR            = 3'b010,
         ACK_ADDR        = 3'b011,
         READ            = 3'b100,

@@ -26,7 +26,6 @@ module tt_um_jk2102 (
     assign rstn_int  = ena ? rst_n : 1'b0;
 
     wire div_clk;
-    wire [15:0] top_count;
 
     // 16-bit clock divider
     clock_divider clk_div_inst (

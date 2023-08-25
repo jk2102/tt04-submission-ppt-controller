@@ -49,14 +49,14 @@ module register_map (
             DONE        <= 1'd0;     // DONE
         end else if (write_enable) begin
             case(address) 
-                4'h0:       CLK_DIV     <= data_in;
+                4'h0:       CLK_DIV     <= data_in[4:0];
                 4'h1:       PERIOD_L    <= data_in;
                 4'h2:       PERIOD_H    <= data_in;
                 4'h3:       WIDTH_L     <= data_in;
                 4'h4:       WIDTH_H     <= data_in;
                 4'h5:       COUNT_L     <= data_in;
                 4'h6:       COUNT_H     <= data_in;
-                4'h7:       RUN         <= data_in;
+                4'h7:       RUN         <= data_in[0];
 
                 default:    ;
             endcase
@@ -70,17 +70,17 @@ module register_map (
     end
 
     // read towards the I2C interface   
-    assign data_out =   (address == 4'h0) ? CLK_DIV :
+    assign data_out =   (address == 4'h0) ? {3'b0, CLK_DIV} :
                         (address == 4'h1) ? PERIOD_L :
                         (address == 4'h2) ? PERIOD_H :
                         (address == 4'h3) ? WIDTH_L :
                         (address == 4'h4) ? WIDTH_H :
                         (address == 4'h5) ? COUNT_L :
                         (address == 4'h6) ? COUNT_H :             
-                        (address == 4'h7) ? RUN :
+                        (address == 4'h7) ? {7'b0, RUN} :
                         (address == 4'h8) ? COUNT_DONE_L :
                         (address == 4'h9) ? COUNT_DONE_H :
-                        (address == 4'hA) ? DONE :
+                        (address == 4'hA) ? {7'b0, DONE} :
                         8'b0;
 
     // read towards PPT controller
