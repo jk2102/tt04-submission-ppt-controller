@@ -32,7 +32,7 @@ module tt_um_jk2102 (
     clock_divider clk_div_inst (
         .clk      (clk),
         .rst_n    (rstn_int),
-        .sel      (5'b1),
+        .sel      (clk_div),
         .clk_out  (div_clk)
     );
 
@@ -44,14 +44,14 @@ module tt_um_jk2102 (
         .rstn       (rstn_int),
         
         // data ports
-        .reg_data_in        (8'd42),
+        .reg_data_in        (reg_data_in),
         .reg_data_out       (reg_data_out),
         .reg_data_addr      (reg_data_addr),
         .reg_write          (reg_write)
     );
 
     // register map
-/*     register_map u_register_map (
+    register_map u_register_map (
         .address        (reg_data_addr[3:0]),
         .data_in        (reg_data_out),
         .data_out       (reg_data_in),
@@ -67,7 +67,7 @@ module tt_um_jk2102 (
         .run_ppt        (run_ppt),
         .count_done     (count_done),
         .done           (done)
-    ); */
+    );
 
 
     // pulse generator
@@ -75,8 +75,8 @@ module tt_um_jk2102 (
         .clk          (div_clk),
         .rst_n        (rstn_int),
         .run          (run_controller),
-        .pulse_period (16'b100),
-        .pulse_width  (16'b1),
+        .pulse_period (period),
+        .pulse_width  (width),
         .pulse_out    (pulse_out)
     );
 
@@ -90,7 +90,7 @@ module tt_um_jk2102 (
     );
 
     // control logic
-    assign run_controller = ena & 1'b1;
+    assign run_controller = ena & run_ppt;
     assign done = 1'b0;
 
     assign uo_out = 8'b0;
