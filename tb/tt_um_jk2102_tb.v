@@ -57,7 +57,7 @@ module tb_tt_um_jk2102();
         send_byte({7'h5A, 1'b0});
 
         // send DATA
-        send_byte(8'hCD);
+        send_byte(8'h05);
         
         // send STOP pattern           
         #5 scl_out_tb = 1'b0; 

@@ -12,6 +12,7 @@ project:
     - pulse_generator.v
     - pulse_counter.v
     - i2c_slave.v
+    - register_map.v
   top_module:  "tt_um_jk2102"      # Put the name of your top module here, must start with "tt_um_". Make it unique by including your github username
 
 # How many tiles your design occupies? A single tile is about 167x108 uM.

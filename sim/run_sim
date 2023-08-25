@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Assign file names to variables
-verilog_file="../src/tt_um_jk2102.v ../src/clock_divider.v ../src/synchronizer.v ../src/pulse_generator.v ../src/pulse_counter.v ../src/i2c_slave.v"
+verilog_file="../src/tt_um_jk2102.v ../src/clock_divider.v ../src/synchronizer.v ../src/pulse_generator.v ../src/pulse_counter.v ../src/i2c_slave.v ../src/register_map.v"
 testbench_file="../tb/tt_um_jk2102_tb.v"
 compiled_output="compiled_output.out"
 vcd_output="simulation_output.vcd"

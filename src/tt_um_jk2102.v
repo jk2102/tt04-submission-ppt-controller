@@ -12,77 +12,107 @@ module tt_um_jk2102 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-// wires
-wire scl, sda, sda_out;
+    // wires
+    wire scl, sda, sda_out;
+
+    wire [7:0] reg_data_in, reg_data_out, reg_data_addr;
+    wire [15:0] period, width, count_done, count;
+    wire reg_write, run_controller;
+    wire [4:0] clk_div;
 
 
-// if not enable, keep in reset
-assign rstn_int  = ena ? rst_n : 1'b0;
+    // if not enable, keep in reset
+    assign rstn_int  = ena ? rst_n : 1'b0;
 
-wire div_clk;
-wire [15:0] top_count;
+    wire div_clk;
+    wire [15:0] top_count;
 
-// 16-bit clock divider
-clock_divider clk_div_inst (
-    .clk      (clk),
-    .rst_n    (rstn_int),
-    .sel      (5'd0),
-    .clk_out  (div_clk)
-);
+    // 16-bit clock divider
+    clock_divider clk_div_inst (
+        .clk      (clk),
+        .rst_n    (rstn_int),
+        .sel      (clk_div),
+        .clk_out  (div_clk)
+    );
 
-// I2C slave
-i2c_slave i2c_slave_inst (
-    .scl        (scl),     // Clock line
-    .sda        (sda),     // Data line
-    .sda_out    (sda_out), // Output data
-    .rstn       (rstn_int)
-);
+    // I2C slave
+    i2c_slave i2c_slave_inst (
+        .scl        (scl),     // Clock line
+        .sda        (sda),     // Data line
+        .sda_out    (sda_out), // Output data
+        .rstn       (rstn_int),
+        
+        // data ports
+        .reg_data_in        (reg_data_in),
+        .reg_data_out       (reg_data_out),
+        .reg_data_addr      (reg_data_addr),
+        .reg_write          (reg_write)
+    );
 
-// synchronizers
-synchronizer #(.WIDTH(8)) sync_inst (
-    .clk        (div_clk),
-    .rst_n      (rstn_int),
-    .in_data    (top_count[15:8]),
-    .out_data   (uo_out)
-);
+    // register map
+    register_map u_register_map (
+        .address        (reg_data_addr[3:0]),
+        .data_in        (reg_data_out),
+        .data_out       (reg_data_in),
+        .write_enable   (reg_write),
+        .clk            (scl),
+        .rstn           (rstn_int),
 
-// pulse generator
-pulse_generator pulse_gen_inst (
-    .clk          (div_clk),
-    .rst_n        (rstn_int),
-    .run          (ena),
-    .pulse_period (16'd10),
-    .pulse_width  (16'd2),
-    .pulse_out    (pulse_out)
-);
+        // PPT side ports
+        .clk_div        (clk_div),
+        .period         (period),
+        .width          (width),
+        .count          (count),
+        .run_ppt        (run_ppt),
+        .count_done     (count_done),
+        .done           (done)
+    );
 
-// pulse counter
-pulse_counter pulse_counter_inst (
-    .clk          (div_clk),
-    .rst_n        (rstn_int),
-    .in_pulse     (pulse_out),
-    .run          (ena),
-    .count        (top_count)
-);
+    // synchronizers
+    synchronizer #(.WIDTH(8)) sync_inst (
+        .clk        (div_clk),
+        .rst_n      (rstn_int),
+        .in_data    (top_count[15:8]),
+        .out_data   (uo_out)
+    );
 
-// control logic
+    // pulse generator
+    pulse_generator pulse_gen_inst (
+        .clk          (div_clk),
+        .rst_n        (rstn_int),
+        .run          (run_controller),
+        .pulse_period (period),
+        .pulse_width  (width),
+        .pulse_out    (pulse_out)
+    );
+
+    // pulse counter
+    pulse_counter pulse_counter_inst (
+        .clk          (div_clk),
+        .rst_n        (rstn_int),
+        .in_pulse     (pulse_out),
+        .run          (run_controller),
+        .count        (count_done)
+    );
+
+    // control logic
+    assign run_controller = ena & run_ppt;
 
 
+    // IO port
 
-// IO port
+    // inputs definition
+    assign scl = uio_in[0];
+    assign sda = uio_in[1];
 
-// inputs definition
-assign scl = uio_in[0];
-assign sda = uio_in[1];
+    // outputs definition
+    // uio[1] is sda - bidir
+    assign uio_out    = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, sda_out, 1'b0};
 
-// outputs definition
-// uio[1] is sda - bidir
-assign uio_out    = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, sda_out, 1'b0};
-
-// output enable definition
-// uio[0] is scl - input
-// uio[1] is sda - bidir --> needs to activate only when SDA is low
-assign uio_oe     = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, !sda_out, 1'b0};
+    // output enable definition
+    // uio[0] is scl - input
+    // uio[1] is sda - bidir --> needs to activate only when SDA is low
+    assign uio_oe     = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, !sda_out, 1'b0};
 
 
 endmodule

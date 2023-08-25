@@ -4,7 +4,13 @@ module i2c_slave(
     input wire scl,    // Clock line
     input wire sda,    // Data line
     output reg sda_out, // Output data
-    input wire rstn
+    input wire rstn,
+
+    // data ports
+    input wire  [7:0] reg_data_in,
+    output reg  [7:0] reg_data_out,
+    output reg  [7:0] reg_data_addr,
+    output reg        reg_write
 );
 
     localparam [2:0] 
@@ -47,7 +53,8 @@ module i2c_slave(
 
     reg [6:0] slave_address = 8'h5A; // Define your slave address here
     reg [7:0] data_in;
-    reg [7:0] data_out = 8'hBE;
+    reg [7:0] data_out;
+    reg reg_addr_or_data;
     reg sda_read;
 
     reg [2:0] bit_count = 3'b111;
@@ -59,11 +66,38 @@ module i2c_slave(
             state <= IDLE;
             bit_count <= 3'b111;
             sda_out <= 1'b1; // High by default
+
+            reg_data_addr   <= 8'b0;
+            reg_data_out    <= 8'b0;
+            reg_addr_or_data <= 1'b0;
+            reg_write <= 1'b0;
         end else begin
             state <= next_state;
             bit_count <= next_bit_count;
             // data setting
             sda_out <= sda_read;
+            
+            // sample the data from the register map whe rxing ADDR
+            if (state == ADDR) data_out <= reg_data_in;
+
+            // push the data to the register map, when ACKing data RX
+            if (state == ACK_DATA) begin
+                if (!reg_addr_or_data)  begin
+                    reg_data_addr <= data_in;
+                    reg_write <= 1'b0;
+                end else begin
+                    // also generate WRITE signal on data port
+                    reg_data_out <= data_in;
+                    reg_write <= 1'b1;
+                end
+                // toggle the reg_addr_or_data signal, first comes the reg addr then comes reg data
+                reg_addr_or_data <= !reg_addr_or_data;
+            end else 
+                reg_write <= 1'b0;
+
+            // handle if there was a I2C slave register read, reset the reg_addr_or_data signal
+            if ((state == READ) & (next_state == STOPorSTART)) reg_addr_or_data <= 1'b0;
+
         end
     end
 
