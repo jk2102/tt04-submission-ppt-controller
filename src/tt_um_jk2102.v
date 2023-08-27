@@ -41,6 +41,7 @@ module tt_um_jk2102 (
         .sda        (sda),     // Data line
         .sda_out    (sda_out), // Output data
         .rstn       (rstn_int),
+        .slv_addr_in ({3'b101, ui_in[3:0]}),
         
         // data ports
         .reg_data_in        (reg_data_in),
@@ -50,7 +51,7 @@ module tt_um_jk2102 (
     );
 
     // register map
-    register_map u_register_map (
+    register_map register_map_inst (
         .address        (reg_data_addr[3:0]),
         .data_in        (reg_data_out),
         .data_out       (reg_data_in),
@@ -73,7 +74,7 @@ module tt_um_jk2102 (
     pulse_generator pulse_gen_inst (
         .clk          (div_clk),
         .rst_n        (rstn_int),
-        .run          (run_controller),
+        .run          (ena & run_ppt & !done),
         .pulse_period (period),
         .pulse_width  (width),
         .pulse_out    (pulse_out)
@@ -84,15 +85,12 @@ module tt_um_jk2102 (
         .clk          (div_clk),
         .rst_n        (rstn_int),
         .in_pulse     (pulse_out),
-        .run          (run_controller),
-        .count        (count_done)
+        .run          (ena & run_ppt),
+        .count        (count_done),
+        .load_count   (count),
+        .done         (done)
     );
 
-    // control logic
-    assign run_controller = ena & run_ppt;
-    assign done = 1'b0;
-
-    assign uo_out = 8'b0;
 
     // IO port
 
@@ -108,6 +106,10 @@ module tt_um_jk2102 (
     // uio[0] is scl - input
     // uio[1] is sda - bidir --> needs to activate only when SDA is low
     assign uio_oe     = {1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, !sda_out, 1'b0};
+
+    // output only port
+    assign uo_out = pulse_out ? 8'b00111111 : 8'b01000000;
+
 
 
 endmodule

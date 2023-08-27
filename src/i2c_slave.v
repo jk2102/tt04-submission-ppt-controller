@@ -6,6 +6,8 @@ module i2c_slave(
     output reg sda_out, // Output data
     input wire rstn,
 
+    input [6:0] slv_addr_in,
+
     // data ports
     input wire  [7:0] reg_data_in,
     output reg  [7:0] reg_data_out,
@@ -51,17 +53,19 @@ module i2c_slave(
 
     // Repeated start ???
 
-    reg [6:0] slave_address = 7'h5A; // Define your slave address here
+    reg [6:0] slave_address; // Define your slave address here
     reg [7:0] data_in;
     reg [7:0] data_out;
     reg reg_addr_or_data;
-    reg sda_read;
 
     reg [2:0] bit_count = 3'b111;
     reg [2:0] state;
 
     always @(negedge scl or negedge rstn) begin
         if (!rstn) begin
+            // define address only on reset
+            slave_address <= slv_addr_in;
+
             state <= IDLE;
             bit_count <= 3'b111;
             sda_out <= 1'b1; // High by default
@@ -73,8 +77,6 @@ module i2c_slave(
             reg_addr_or_data <= 1'b0;
             reg_write <= 1'b0;
         end else begin
-            // data setting
-            sda_out <= sda_read;
             
             // sample the data from the register map whe rxing ADDR
             if (state == ADDR) data_out <= reg_data_in;
@@ -100,7 +102,7 @@ module i2c_slave(
             // FSM decoder
             case(state)
                 IDLE: begin
-                    sda_read <= 1;
+                    sda_out <= 1;
                     if (start_pattern) begin
                         state <= ADDR;
                         bit_count <= 3'b111;
@@ -111,11 +113,11 @@ module i2c_slave(
 
 
                 ADDR: begin
-                    sda_read <= 1;
+                    sda_out <= 1;
                     if (bit_count == 3'b000) begin
                         if (data_in[7:1] == slave_address) begin
                             state <= ACK_ADDR;
-                            sda_read <= 0; // Acknowledge by pulling line low
+                            sda_out <= 0; // Acknowledge by pulling line low
                             bit_count <= 3'b111;
                         end else begin
                             state <= IDLE;
@@ -127,19 +129,25 @@ module i2c_slave(
                 end
 
                 ACK_ADDR: begin
-                    sda_read <= 1; // release SDA line from ACK
-                    if (data_in[0] == 1'b0) begin
+                    sda_out <= 1; // release SDA line from ACK
+                    if (start_pattern) begin
+                        state <= ADDR;
+                        bit_count <= 3'b111;
+                    end else if (data_in[0] == 1'b0) begin
                         state <=  WRITE;
                     end else begin
                         state <=  READ;
-                        sda_read <= data_out[bit_count];
+                        sda_out <= data_out[bit_count];
                         bit_count <= bit_count - 1; 
                     end
                 end
 
                 READ: begin
-                    sda_read <= data_out[bit_count];
-                    if (bit_count == 3'b000) begin
+                    sda_out <= data_out[bit_count];
+                    if (start_pattern) begin
+                        state <= ADDR;
+                        bit_count <= 3'b111;
+                    end else if (bit_count == 3'b000) begin
                         state <= STOPorSTART;
                     end else begin
                         bit_count <= bit_count - 1;
@@ -148,10 +156,13 @@ module i2c_slave(
                 end
 
                 WRITE: begin
-                    sda_read <= 1;
-                    if (bit_count == 3'b000) begin
+                    sda_out <= 1;
+                    if (start_pattern) begin
+                        state <= ADDR;
+                        bit_count <= 3'b111;
+                    end else if (bit_count == 3'b000) begin
                         state <= ACK_DATA;
-                        sda_read <= 0; // Acknowledge by pulling line low
+                        sda_out <= 0; // Acknowledge by pulling line low
                     end else begin
                         bit_count <= bit_count - 1;
                         state <= WRITE;
@@ -159,20 +170,24 @@ module i2c_slave(
                 end
                 
                 ACK_DATA: begin
-                    sda_read <= 1; // release SDA line from ACK
-                    state <= STOPorSTART;
+                    sda_out <= 1; // release SDA line from ACK
+                    if (start_pattern) begin
+                        state <= ADDR;
+                        bit_count <= 3'b111;
+                    end else if (start_pattern) state <= STOPorSTART;
+                    else state <= WRITE;
+                    bit_count <= 3'b111;
                 end
 
                 STOPorSTART: begin
-                    sda_read <= 1;
+                    sda_out <= 1;
                     if (start_pattern & stop_pattern) begin
                         state <= ADDR;
                         bit_count <= 3'b111;
                     end else if (stop_pattern) begin
                         state <= IDLE;
                         bit_count <= 3'b111;
-                    end else
-                    if (start_pattern) begin
+                    end else if (start_pattern) begin
                         state <= ADDR;
                         bit_count <= 3'b111;
                     end else begin

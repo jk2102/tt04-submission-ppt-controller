@@ -9,18 +9,20 @@ module pulse_generator (
     output       pulse_out
 );
 
-    reg [15:0] counter = 16'b0;
-    reg pulse_active = 1'b0;
+    reg [15:0] counter, pulse_period_r, pulse_width_r;
+    reg pulse_active;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             counter <= 16'b0;
             pulse_active <= 1'b0;
+            pulse_period_r <= 16'd128;
+            pulse_width_r  <= 16'b1;
         end else if (run) begin
-            if (counter < pulse_width) begin
+            if (counter < pulse_width_r) begin
                 counter <= counter + 1'b1;
                 pulse_active <= 1'b1;
-            end else if (counter < pulse_period) begin
+            end else if (counter < pulse_period_r) begin
                 counter <= counter + 1'b1;
                 pulse_active <= 1'b0;
             end else begin
@@ -30,6 +32,8 @@ module pulse_generator (
         end else begin
             counter <= 16'b0;
             pulse_active <= 1'b0;
+            pulse_period_r <= pulse_period;
+            pulse_width_r  <= pulse_width;
         end
     end
 

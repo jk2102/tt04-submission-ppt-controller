@@ -1,0 +1,215 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
+| Date         : Sat Aug 26 21:39:52 2023
+| Host         : radna_stanica running 64-bit major release  (build 9200)
+| Command      : report_timing -sort_by group -max_paths 100 -path_type summary -file ./fpga_output/post_route_timing.rpt
+| Design       : fpga_top_lvl
+| Device       : 7a35t-cpg236
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+--------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Startpoint                     Endpoint                       Slack(ns)     
+----------------------------------------------------------------------------
+i2c_instance/reg_data_out_reg[7]/C
+                               led[15]                        inf           
+i2c_instance/reg_data_out_reg[5]/C
+                               led[13]                        inf           
+i2c_instance/reg_data_out_reg[4]/C
+                               led[12]                        inf           
+i2c_instance/sda_out_reg/C     sda                            inf           
+i2c_instance/reg_data_out_reg[6]/C
+                               led[14]                        inf           
+i2c_instance/reg_data_out_reg[1]/C
+                               led[9]                         inf           
+i2c_instance/reg_data_out_reg[2]/C
+                               led[10]                        inf           
+i2c_instance/reg_data_out_reg[3]/C
+                               led[11]                        inf           
+i2c_instance/reg_data_addr_reg[1]/C
+                               led[1]                         inf           
+sda                            i2c_instance/data_in_reg[1]/D  inf           
+sda                            i2c_instance/data_in_reg[0]/D  inf           
+sda                            i2c_instance/data_in_reg[5]/D  inf           
+sda                            i2c_instance/data_in_reg[4]/D  inf           
+i2c_instance/reg_data_addr_reg[6]/C
+                               led[6]                         inf           
+i2c_instance/reg_data_addr_reg[7]/C
+                               led[7]                         inf           
+sda                            i2c_instance/data_in_reg[7]/D  inf           
+sda                            i2c_instance/data_in_reg[6]/D  inf           
+i2c_instance/reg_data_out_reg[0]/C
+                               led[8]                         inf           
+i2c_instance/reg_data_addr_reg[0]/C
+                               led[0]                         inf           
+i2c_instance/reg_data_addr_reg[5]/C
+                               led[5]                         inf           
+i2c_instance/reg_data_addr_reg[2]/C
+                               led[2]                         inf           
+sda                            i2c_instance/data_in_reg[3]/D  inf           
+sda                            i2c_instance/data_in_reg[2]/D  inf           
+i2c_instance/reg_data_addr_reg[4]/C
+                               led[4]                         inf           
+i2c_instance/reg_data_addr_reg[3]/C
+                               led[3]                         inf           
+scl                            i2c_instance/start_pattern_reg/D
+                                                              inf           
+scl                            i2c_instance/stop_pattern_reg/D
+                                                              inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/sda_out_reg/D     inf           
+i2c_instance/data_in_reg[7]/C  i2c_instance/FSM_onehot_state_reg[0]/D
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[1]/C
+                               i2c_instance/bit_count_reg[0]/D
+                                                              inf           
+i2c_instance/data_in_reg[7]/C  i2c_instance/bit_count_reg[2]/D
+                                                              inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/bit_count_reg[1]/D
+                                                              inf           
+i2c_instance/data_in_reg[7]/C  i2c_instance/FSM_onehot_state_reg[6]/D
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[1]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[2]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[3]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[4]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[1]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[2]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[3]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[4]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[5]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[6]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_out_reg[7]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[0]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[5]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[6]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_data_addr_reg[7]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[1]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[5]/CLR
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[0]/PRE
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[2]/CLR
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[3]/CLR
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[4]/CLR
+                                                              inf           
+btnC                           i2c_instance/reg_addr_or_data_reg/CLR
+                                                              inf           
+btnC                           i2c_instance/stop_pattern_reg/CLR
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[1]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[3]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[4]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[6]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[7]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[0]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_out_reg[2]/CLR
+                                                              inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/FSM_onehot_state_reg[1]/D
+                                                              inf           
+sw[5]                          i2c_instance/data_out_reg[5]/D inf           
+btnC                           i2c_instance/reg_data_out_reg[0]/CLR
+                                                              inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/FSM_onehot_state_reg[4]/D
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[0]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[1]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[2]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[3]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[4]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[5]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[6]/CLR
+                                                              inf           
+btnC                           i2c_instance/data_in_reg[7]/CLR
+                                                              inf           
+sw[7]                          i2c_instance/data_out_reg[7]/D inf           
+sw[4]                          i2c_instance/data_out_reg[4]/D inf           
+sw[6]                          i2c_instance/data_out_reg[6]/D inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/FSM_onehot_state_reg[5]/D
+                                                              inf           
+sw[2]                          i2c_instance/data_out_reg[2]/D inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[5]/CLR
+                                                              inf           
+btnC                           i2c_instance/bit_count_reg[0]/PRE
+                                                              inf           
+btnC                           i2c_instance/bit_count_reg[1]/PRE
+                                                              inf           
+btnC                           i2c_instance/bit_count_reg[2]/PRE
+                                                              inf           
+sw[3]                          i2c_instance/data_out_reg[3]/D inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/FSM_onehot_state_reg[2]/D
+                                                              inf           
+btnC                           i2c_instance/FSM_onehot_state_reg[6]/CLR
+                                                              inf           
+btnC                           i2c_instance/sda_out_reg/PRE   inf           
+btnC                           i2c_instance/start_pattern_reg/CLR
+                                                              inf           
+sw[0]                          i2c_instance/data_out_reg[0]/D inf           
+sw[1]                          i2c_instance/data_out_reg[1]/D inf           
+i2c_instance/bit_count_reg[0]/C
+                               i2c_instance/FSM_onehot_state_reg[3]/D
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_addr_reg[0]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_addr_reg[5]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_addr_reg[6]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_addr_reg[7]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_out_reg[1]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_out_reg[2]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_out_reg[3]/CE
+                                                              inf           
+i2c_instance/FSM_onehot_state_reg[3]/C
+                               i2c_instance/reg_data_out_reg[4]/CE
+                                                              inf           
+
+
+
