@@ -10,8 +10,8 @@ module register_map (
 
     // PPT side ports
     output [4:0]    clk_div,
-    output [14:0]   period,
-    output [14:0]   width,
+    output [13:0]   period,
+    output [13:0]   width,
     output [7:0]   count,
     output          run_ppt,
     input [7:0]    count_done,
