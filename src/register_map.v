@@ -22,9 +22,9 @@ module register_map (
     // Declare the rgisters
     reg [4:0] CLK_DIV;
     reg [7:0] PERIOD_L;
-    reg [6:0] PERIOD_H;
+    reg [5:0] PERIOD_H;
     reg [7:0] WIDTH_L;
-    reg [6:0] WIDTH_H;
+    reg [5:0] WIDTH_H;
     reg [7:0] COUNT_L;
     //reg [7:0] COUNT_H;
     reg       RUN;
@@ -38,9 +38,9 @@ module register_map (
             // ensure basic functionality if I2C interface is not working
             CLK_DIV     <= 5'd9;      // CLK_DIV  --> With OSC 32k768 --> f = 32 Hz
             PERIOD_L    <= 8'd128;    // PERIOD_L --> 128 --> F_PPT = 0.25 Hz
-            PERIOD_H    <= 7'd0;      // PERIOD_H --> 0
+            PERIOD_H    <= 6'd0;      // PERIOD_H --> 0
             WIDTH_L     <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
-            WIDTH_H     <= 7'd0;      // WIDTH_H  --> 0 
+            WIDTH_H     <= 6'd0;      // WIDTH_H  --> 0 
             COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
             //COUNT_H     <= 8'd0;      // COUNT_H  --> 
             RUN         <= 1'd1;      // RUN      --> 1 --> fallback if I2C not working
@@ -51,9 +51,9 @@ module register_map (
             case(address) 
                 4'h0:       CLK_DIV     <= data_in[4:0];
                 4'h1:       PERIOD_L    <= data_in;
-                4'h2:       PERIOD_H    <= data_in[6:0];
+                4'h2:       PERIOD_H    <= data_in[5:0];
                 4'h3:       WIDTH_L     <= data_in;
-                4'h4:       WIDTH_H     <= data_in[6:0];
+                4'h4:       WIDTH_H     <= data_in[5:0];
                 4'h5:       COUNT_L     <= data_in;
                 //4'h6:       COUNT_H     <= data_in;
                 4'h7:       RUN         <= data_in[0];
@@ -72,9 +72,9 @@ module register_map (
     // read towards the I2C interface   
     assign data_out =   (address == 4'h0) ? {3'b0, CLK_DIV} :
                         (address == 4'h1) ? PERIOD_L :
-                        (address == 4'h2) ? {1'b0, PERIOD_H} :
+                        (address == 4'h2) ? {2'b0, PERIOD_H} :
                         (address == 4'h3) ? WIDTH_L :
-                        (address == 4'h4) ? {1'b0, WIDTH_H} :
+                        (address == 4'h4) ? {2'b0, WIDTH_H} :
                         (address == 4'h5) ? COUNT_L :
                         //(address == 4'h6) ? COUNT_H :             
                         (address == 4'h7) ? {7'b0, RUN} :
