@@ -97,7 +97,8 @@ module i2c_slave(
                 reg_write <= 1'b0;
 
             // handle if there was a I2C slave register read, reset the reg_addr_or_data signal
-            if ((state == READ) & (state == STOPorSTART)) reg_addr_or_data <= 1'b0;
+            // if ((state == READ) & (state == STOPorSTART)) reg_addr_or_data <= 1'b0;
+            if ((state == ADDR)) reg_addr_or_data <= 1'b0;
 
             // FSM decoder
             case(state)

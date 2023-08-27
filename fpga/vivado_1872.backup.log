@@ -1,0 +1,42 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Sun Aug 27 13:34:37 2023
+# Process ID: 1872
+# Current directory: G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/fpga
+# Command line: vivado.exe -mode batch -source fpga.tcl
+# Log file: G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/fpga/vivado.log
+# Journal file: G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/fpga\vivado.jou
+#-----------------------------------------------------------
+source fpga.tcl
+# set_param general.maxThreads 8
+# set outputDir ./fpga_output             
+# file mkdir $outputDir
+# read_verilog  [ glob ../src/i2c_slave.v ]
+# read_verilog  [ glob ../src/fpga_top_lvl.v ]
+# read_xdc ./fpga.xdc
+# synth_design -top fpga_top_lvl -part xc7a35tcpg236-1 -flatten rebuilt
+Command: synth_design -top fpga_top_lvl -part xc7a35tcpg236-1 -flatten rebuilt
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 42000
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:00 ; elapsed = 00:00:03 . Memory (MB): peak = 1004.949 ; gain = 0.000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'fpga_top_lvl' [G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/src/fpga_top_lvl.v:3]
+ERROR: [Synth 8-439] module 'tt_um_jk2102' not found [G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/src/fpga_top_lvl.v:36]
+ERROR: [Synth 8-6156] failed synthesizing module 'fpga_top_lvl' [G:/Moj disk/magnetar/tiny_tapeout/tt04-submission-ppt-controller/src/fpga_top_lvl.v:3]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 1004.949 ; gain = 0.000
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+7 Infos, 0 Warnings, 0 Critical Warnings and 3 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Sun Aug 27 13:34:48 2023...

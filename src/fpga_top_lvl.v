@@ -6,9 +6,13 @@ module fpga_top_lvl (
 
     input   scl,
     inout   sda,
+    output reg clk_32768Hz,
+    output pulse_out,
 
-    output [15:0]       led,
-    input [7:0]         sw
+    output [6:0]       seg,
+    input [8:0]         sw,
+    output              dp,
+    output [3:0]        an
 
 );
 
@@ -18,28 +22,52 @@ module fpga_top_lvl (
     assign sda = !sda_out_signal ? 1'b0 : 1'bZ;
     assign sda_signal = sda;
 
-    i2c_slave i2c_instance (
-        .scl        (scl),                // Connect to an external or internal clock line
-        .sda        (sda_signal),                // Connect to an external or internal data line
-        .sda_out    (sda_out_signal),        // Connect to an external or internal output data line
-        .rstn       (!btnC),              // Connect to an external or internal reset (active low)
+    // 7-seg 
+    wire [7:0] uo_out_w;
+    assign seg = ~uo_out_w[6:0];
+    assign an = 4'b0000;
+    assign dp = 1'b1;
 
-        // data ports
-        .reg_data_in    (sw),       // Connect to data source
-        .reg_data_out   (led[15:8]),      // Connect to data sink or next module
-        .reg_data_addr  (led[7:0]),     // Connect to address source or next module
-        .reg_write      ()         // Connect to a write control signal
-    );
+    // IO port
+    wire [7:0] uio_in_w, uio_out_w, uio_oe_w;
+
+    assign uio_in_w = {6'b0, sda_signal, scl};
+    assign sda_out_signal = uio_out_w[1];
+    assign pulse_out = uo_out_w[0];
 
     tt_um_jk2102 instance_name (
-        .ui_in      (your_input_wire_or_bus),   // Dedicated inputs
-        .uo_out     (your_output_wire_or_bus), // Dedicated outputs
-        .uio_in     (your_bidir_input),        // IOs: Bidirectional Input path
-        .uio_out    (your_bidir_output),      // IOs: Bidirectional Output path
-        .uio_oe     (your_bidir_enable),       // IOs: Bidirectional Enable path
-        .ena        (your_enable_signal),         // enable signal
-        .clk        (your_clock_signal),          // clock signal
-        .rst_n      (your_reset_signal)         // reset signal (active low)
+        .ui_in      (sw[7:0]),   // Dedicated inputs
+
+        .uo_out     (uo_out_w), // Dedicated outputs
+
+        .uio_in     (uio_in_w),        // IOs: Bidirectional Input path
+        .uio_out    (uio_out_w),      // IOs: Bidirectional Output path
+        .uio_oe     (uio_oe_w),       // IOs: Bidirectional Enable path
+
+        .ena        (sw[8]),         // enable signal
+        .clk        (clk_32768Hz),          // clock signal
+        .rst_n      (!btnC)         // reset signal (active low)
     );
 
+    // clock divider from 100 MHz to 32k768
+    // Use 12-bit counter for up to 4096, but we'll only count up to 3051
+    reg [11:0] counter = 12'd0;
+
+    always @(posedge clk or posedge btnC) begin
+        if (btnC) begin
+            counter <= 12'd0;
+            clk_32768Hz <= 0;
+        end else begin
+            if (counter == 12'd1525) begin // We're using 3051 as our divisor (off by 1 due to 0 count)
+                counter <= 12'd0;
+                clk_32768Hz <= ~clk_32768Hz;  // Toggle the clock
+            end else begin
+                counter <= counter + 12'd1;
+            end
+        end
+    end
+
 endmodule
+
+
+

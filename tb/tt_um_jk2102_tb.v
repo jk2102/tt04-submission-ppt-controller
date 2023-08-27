@@ -56,6 +56,7 @@ module tt_um_jk2102_tb();
         
         #70000000;
 
+        // modify to use Start - ADDR - R/W - ACK - REG_ADDR - ACK - REG_DATA - Stop !!!
         // send RUN = 0
         write_register(8'h5A, 8'h7, 8'h0);
 
