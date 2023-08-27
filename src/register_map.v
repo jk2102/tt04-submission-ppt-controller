@@ -12,9 +12,9 @@ module register_map (
     output [4:0]    clk_div,
     output [15:0]   period,
     output [15:0]   width,
-    output [15:0]   count,
+    output [7:0]   count,
     output          run_ppt,
-    input [15:0]    count_done,
+    input [7:0]    count_done,
     input           done
 
 );
@@ -26,10 +26,10 @@ module register_map (
     reg [7:0] WIDTH_L;
     reg [7:0] WIDTH_H;
     reg [7:0] COUNT_L;
-    reg [7:0] COUNT_H;
+    //reg [7:0] COUNT_H;
     reg       RUN;
     reg [7:0] COUNT_DONE_L;
-    reg [7:0] COUNT_DONE_H;
+    //reg [7:0] COUNT_DONE_H;
     reg       DONE;
 
     always @(posedge clk or negedge rstn) begin
@@ -42,10 +42,10 @@ module register_map (
             WIDTH_L     <= 8'd1;      // WIDTH_L  --> 1 --> deltaT = 1/32 Hz
             WIDTH_H     <= 8'd0;      // WIDTH_H  --> 0 
             COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
-            COUNT_H     <= 8'd0;      // COUNT_H  --> 
+            //COUNT_H     <= 8'd0;      // COUNT_H  --> 
             RUN         <= 1'd1;      // RUN      --> 1 --> fallback if I2C not working
             COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
-            COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
+            //COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
             DONE        <= 1'd0;     // DONE
         end else if (write_enable) begin
             case(address) 
@@ -55,7 +55,7 @@ module register_map (
                 4'h3:       WIDTH_L     <= data_in;
                 4'h4:       WIDTH_H     <= data_in;
                 4'h5:       COUNT_L     <= data_in;
-                4'h6:       COUNT_H     <= data_in;
+                //4'h6:       COUNT_H     <= data_in;
                 4'h7:       RUN         <= data_in[0];
 
                 default:    ;
@@ -64,7 +64,7 @@ module register_map (
         end else begin
             // refresh with PPT controller side data
             COUNT_DONE_L    <= count_done[7:0];
-            COUNT_DONE_H    <= count_done[15:8];
+            //COUNT_DONE_H    <= count_done[15:8];
             DONE            <= done;
         end
     end
@@ -76,10 +76,10 @@ module register_map (
                         (address == 4'h3) ? WIDTH_L :
                         (address == 4'h4) ? WIDTH_H :
                         (address == 4'h5) ? COUNT_L :
-                        (address == 4'h6) ? COUNT_H :             
+                        //(address == 4'h6) ? COUNT_H :             
                         (address == 4'h7) ? {7'b0, RUN} :
                         (address == 4'h8) ? COUNT_DONE_L :
-                        (address == 4'h9) ? COUNT_DONE_H :
+                        //(address == 4'h9) ? COUNT_DONE_H :
                         (address == 4'hA) ? {7'b0, DONE} :
                         8'b0;
 
@@ -87,7 +87,7 @@ module register_map (
     assign clk_div  = CLK_DIV;
     assign period   = {PERIOD_H, PERIOD_L};
     assign width    = {WIDTH_H, WIDTH_L};
-    assign count    = {COUNT_H, COUNT_L};
+    assign count    = COUNT_L;
     assign run_ppt  = RUN;
 
 

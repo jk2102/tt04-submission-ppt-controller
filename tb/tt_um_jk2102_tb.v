@@ -130,18 +130,18 @@ module tt_um_jk2102_tb();
             send_byte(reg_addr_i);
             
             // send STOP pattern           
-            #5 scl_out_tb = 1'b0; 
-            #5 sda_out_tb = 1'b0;            
-            #5 scl_out_tb = 1'b1; 
-            #5 sda_out_tb = 1'b1;
+            // #5 scl_out_tb = 1'b0; 
+            // #5 sda_out_tb = 1'b0;            
+            // #5 scl_out_tb = 1'b1; 
+            // #5 sda_out_tb = 1'b1;
 
-            #25;
+            // #25;
 
-            // send START pattern
-            #5 sda_out_tb = 1'b0;
+            // // send START pattern
+            // #5 sda_out_tb = 1'b0;
 
             // send ADDR and write access
-            send_byte({addr_i[6:0], 1'b0});
+            //send_byte({addr_i[6:0], 1'b0});
 
             // send DATA
             send_byte(reg_data_i);
