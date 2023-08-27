@@ -16,7 +16,8 @@ module tt_um_jk2102 (
     wire scl, sda, sda_out;
 
     wire [7:0] reg_data_in, reg_data_out, reg_data_addr, count_done, count;
-    wire [15:0] period, width;
+    wire [14:0] period, width;
+
     wire reg_write, run_controller, run_ppt, done, pulse_out;
     wire [4:0] clk_div;
 
