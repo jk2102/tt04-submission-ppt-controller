@@ -1,7 +1,7 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-// Date        : Mon Aug 28 14:49:46 2023
+// Date        : Mon Aug 28 15:30:20 2023
 // Host        : radna_stanica running 64-bit major release  (build 9200)
 // Command     : write_verilog -force ./fpga_output/fpga_netlist.v
 // Design      : fpga_top_lvl
@@ -3391,133 +3391,177 @@ module register_map
   wire scl_IBUF_BUFG;
   wire [1:0]sw_IBUF;
 
-  FDPE \CLK_DIV_reg[0] 
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    \CLK_DIV_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\CLK_DIV_reg[4]_1 ),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .PRE(btnC),
         .Q(\CLK_DIV_reg[4]_0 [0]));
-  FDCE \CLK_DIV_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \CLK_DIV_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\CLK_DIV_reg[4]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(\CLK_DIV_reg[4]_0 [1]));
-  FDCE \CLK_DIV_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \CLK_DIV_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\CLK_DIV_reg[4]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(\CLK_DIV_reg[4]_0 [2]));
-  FDPE \CLK_DIV_reg[3] 
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    \CLK_DIV_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\CLK_DIV_reg[4]_1 ),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .PRE(btnC),
         .Q(\CLK_DIV_reg[4]_0 [3]));
-  FDCE \CLK_DIV_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \CLK_DIV_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\CLK_DIV_reg[4]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .Q(\CLK_DIV_reg[4]_0 [4]));
-  FDCE \COUNT_DONE_L_reg[0] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [0]),
         .Q(\COUNT_DONE_L_reg[7]_0 [0]));
-  FDCE \COUNT_DONE_L_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [1]),
         .Q(\COUNT_DONE_L_reg[7]_0 [1]));
-  FDCE \COUNT_DONE_L_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [2]),
         .Q(\COUNT_DONE_L_reg[7]_0 [2]));
-  FDCE \COUNT_DONE_L_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [3]),
         .Q(\COUNT_DONE_L_reg[7]_0 [3]));
-  FDCE \COUNT_DONE_L_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [4]),
         .Q(\COUNT_DONE_L_reg[7]_0 [4]));
-  FDCE \COUNT_DONE_L_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [5]),
         .Q(\COUNT_DONE_L_reg[7]_0 [5]));
-  FDCE \COUNT_DONE_L_reg[6] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[6] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [6]),
         .Q(\COUNT_DONE_L_reg[7]_0 [6]));
-  FDCE \COUNT_DONE_L_reg[7] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_DONE_L_reg[7] 
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
         .D(\COUNT_DONE_L_reg[7]_1 [7]),
         .Q(\COUNT_DONE_L_reg[7]_0 [7]));
-  FDCE \COUNT_L_reg[0] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .Q(COUNT_L));
-  FDCE \COUNT_L_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(Q[0]));
-  FDCE \COUNT_L_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(Q[1]));
-  FDCE \COUNT_L_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .Q(Q[2]));
-  FDPE \COUNT_L_reg[4] 
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .PRE(btnC),
         .Q(Q[3]));
-  FDCE \COUNT_L_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [5]),
         .Q(Q[4]));
-  FDCE \COUNT_L_reg[6] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[6] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [6]),
         .Q(Q[5]));
-  FDCE \COUNT_L_reg[7] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \COUNT_L_reg[7] 
        (.C(scl_IBUF_BUFG),
         .CE(\COUNT_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [7]),
         .Q(Q[6]));
-  FDCE DONE_reg
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    DONE_reg
        (.C(scl_IBUF_BUFG),
         .CE(E),
         .CLR(btnC),
@@ -3529,91 +3573,121 @@ module register_map
        (.I0(btnC_IBUF),
         .I1(sw_IBUF[1]),
         .O(btnC));
-  FDCE \PERIOD_H_reg[0] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .Q(\PERIOD_H_reg[5]_0 [8]));
-  FDCE \PERIOD_H_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(\PERIOD_H_reg[5]_0 [9]));
-  FDCE \PERIOD_H_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(\PERIOD_H_reg[5]_0 [10]));
-  FDCE \PERIOD_H_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .Q(\PERIOD_H_reg[5]_0 [11]));
-  FDCE \PERIOD_H_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .Q(\PERIOD_H_reg[5]_0 [12]));
-  FDCE \PERIOD_H_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_H_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [5]),
         .Q(\PERIOD_H_reg[5]_0 [13]));
-  FDCE \PERIOD_L_reg[0] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .Q(\PERIOD_H_reg[5]_0 [0]));
-  FDCE \PERIOD_L_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(\PERIOD_H_reg[5]_0 [1]));
-  FDCE \PERIOD_L_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(\PERIOD_H_reg[5]_0 [2]));
-  FDCE \PERIOD_L_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .Q(\PERIOD_H_reg[5]_0 [3]));
-  FDCE \PERIOD_L_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .Q(\PERIOD_H_reg[5]_0 [4]));
-  FDCE \PERIOD_L_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [5]),
         .Q(\PERIOD_H_reg[5]_0 [5]));
-  FDCE \PERIOD_L_reg[6] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[6] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [6]),
         .Q(\PERIOD_H_reg[5]_0 [6]));
-  FDPE \PERIOD_L_reg[7] 
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    \PERIOD_L_reg[7] 
        (.C(scl_IBUF_BUFG),
         .CE(\PERIOD_L_reg[7]_1 ),
         .D(\PERIOD_L_reg[7]_0 [7]),
         .PRE(btnC),
         .Q(\PERIOD_H_reg[5]_0 [7]));
-  FDCE RUN_reg_C
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    RUN_reg_C
        (.C(scl_IBUF_BUFG),
         .CE(\<const1> ),
         .CLR(RUN_reg_LDC_i_2_n_0),
@@ -3642,7 +3716,9 @@ module register_map
         .I1(sw_IBUF[1]),
         .I2(sw_IBUF[0]),
         .O(RUN_reg_LDC_i_2_n_0));
-  FDPE RUN_reg_P
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    RUN_reg_P
        (.C(scl_IBUF_BUFG),
         .CE(\<const1> ),
         .D(RUN_reg_C_1),
@@ -3652,85 +3728,113 @@ module register_map
        (.P(\<const1> ));
   VCC VCC_1
        (.P(VCC_2));
-  FDCE \WIDTH_H_reg[0] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .Q(D[8]));
-  FDCE \WIDTH_H_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(D[9]));
-  FDCE \WIDTH_H_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(D[10]));
-  FDCE \WIDTH_H_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .Q(D[11]));
-  FDCE \WIDTH_H_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .Q(D[12]));
-  FDCE \WIDTH_H_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_H_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_H_reg[5]_1 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [5]),
         .Q(D[13]));
-  FDPE \WIDTH_L_reg[0] 
+  FDPE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[0] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .D(\PERIOD_L_reg[7]_0 [0]),
         .PRE(btnC),
         .Q(D[0]));
-  FDCE \WIDTH_L_reg[1] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[1] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [1]),
         .Q(D[1]));
-  FDCE \WIDTH_L_reg[2] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[2] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [2]),
         .Q(D[2]));
-  FDCE \WIDTH_L_reg[3] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[3] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [3]),
         .Q(D[3]));
-  FDCE \WIDTH_L_reg[4] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[4] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [4]),
         .Q(D[4]));
-  FDCE \WIDTH_L_reg[5] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[5] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [5]),
         .Q(D[5]));
-  FDCE \WIDTH_L_reg[6] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[6] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),
         .D(\PERIOD_L_reg[7]_0 [6]),
         .Q(D[6]));
-  FDCE \WIDTH_L_reg[7] 
+  FDCE #(
+    .IS_C_INVERTED(1'b1)) 
+    \WIDTH_L_reg[7] 
        (.C(scl_IBUF_BUFG),
         .CE(\WIDTH_L_reg[7]_0 ),
         .CLR(btnC),

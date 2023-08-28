@@ -34,7 +34,9 @@ module register_map (
     //reg [7:0] COUNT_DONE_H;
     reg       DONE;
 
-    always @(negedge clk or negedge rstn) begin
+    reg run_init;
+
+    always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
             // deafult values
             // ensure basic functionality if I2C interface is not working
@@ -45,10 +47,13 @@ module register_map (
             WIDTH_H     <= 6'd0;      // WIDTH_H  --> 0 
             COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
             //COUNT_H     <= 8'd0;      // COUNT_H  --> 
-            RUN         <= run_on_reset;      // RUN      --> 1 --> fallback if I2C not working with run_override
+            RUN         <= 1'b0;      // RUN      --> 1 --> fallback if I2C not working with run_override
             COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
             //COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
             DONE        <= 1'd0;     // DONE
+
+            run_init    <= 1'b0;
+
         end else if (write_enable) begin
             case(address) 
                 4'h0:       CLK_DIV     <= data_in[4:0];
@@ -68,6 +73,11 @@ module register_map (
             COUNT_DONE_L    <= count_done[7:0];
             //COUNT_DONE_H    <= count_done[15:8];
             DONE            <= done;
+
+            if (~run_init) begin
+                RUN         <= run_on_reset; 
+                run_init    <= 1'b1;
+            end
         end
     end
 

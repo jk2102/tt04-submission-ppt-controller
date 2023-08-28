@@ -61,10 +61,12 @@ module i2c_slave(
     reg [2:0] bit_count = 3'b111;
     reg [2:0] state;
 
+    reg run_init;
+
     always @(negedge scl or negedge rstn) begin
         if (!rstn) begin
             // define address only on reset
-            slave_address <= slv_addr_in;
+            slave_address <= 7'h5A;
 
             state <= IDLE;
             bit_count <= 3'b111;
@@ -76,7 +78,15 @@ module i2c_slave(
             reg_data_out    <= 8'b0;
             reg_addr_or_data <= 1'b0;
             reg_write <= 1'b0;
+
+            run_init <= 1'b0;
         end else begin
+
+            if (~run_init) begin
+                slave_address <= slv_addr_in;
+                run_init <= 1'b1;
+            end
+
             
             // sample the data from the register map whe rxing ADDR
             if (state == ADDR) data_out <= reg_data_in;
