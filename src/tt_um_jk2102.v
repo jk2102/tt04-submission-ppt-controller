@@ -18,13 +18,14 @@ module tt_um_jk2102 (
     wire [7:0] reg_data_in, reg_data_out, reg_data_addr, count_done, count;
     wire [13:0] period, width;
 
-    wire reg_write, run_ppt, done, pulse_out;
+    wire reg_write, run_ppt, done, pulse_out, run_ppt_reg;
     wire [4:0] clk_div;
     
 
     // if not enable, keep in reset
     wire rstn_int;
     assign rstn_int  = ena ? rst_n : 1'b0;
+
 
     wire div_clk;
 
@@ -60,14 +61,13 @@ module tt_um_jk2102 (
         .clk            (scl),
         .rstn           (rstn_int),
 
-        .run_on_reset   (ui_in[4]),
 
         // PPT side ports
         .clk_div        (clk_div),
         .period         (period),
         .width          (width),
         .count          (count),
-        .run_ppt        (run_ppt),
+        .run_ppt        (run_ppt_reg),
         .count_done     (count_done),
         .done           (done)
     );
@@ -93,6 +93,23 @@ module tt_um_jk2102 (
         .load_count   (count),
         .done         (done)
     );
+
+
+    
+    reg I2C_active;
+
+    always @ (negedge scl or negedge rstn_int) begin
+        if (~rstn_int)
+            I2C_active <= 1'b0;
+        else
+            I2C_active <= 1'b1;
+    end
+    
+    wire run_override;
+    assign run_override = ui_in[4];
+
+    assign run_ppt = I2C_active ? run_ppt_reg : run_override;
+
 
 
     // IO port

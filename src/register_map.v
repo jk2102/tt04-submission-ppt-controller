@@ -8,7 +8,6 @@ module register_map (
     input clk,              // clock signal
     input rstn,
 
-    input run_on_reset,
 
     // PPT side ports
     output [4:0]    clk_div,
@@ -34,7 +33,6 @@ module register_map (
     //reg [7:0] COUNT_DONE_H;
     reg       DONE;
 
-    reg run_init;
 
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
@@ -52,7 +50,6 @@ module register_map (
             //COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
             DONE        <= 1'd0;     // DONE
 
-            run_init    <= 1'b0;
 
         end else if (write_enable) begin
             case(address) 
@@ -74,10 +71,6 @@ module register_map (
             //COUNT_DONE_H    <= count_done[15:8];
             DONE            <= done;
 
-            if (~run_init) begin
-                RUN         <= run_on_reset; 
-                run_init    <= 1'b1;
-            end
         end
     end
 

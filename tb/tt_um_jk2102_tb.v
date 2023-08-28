@@ -45,7 +45,7 @@ module tt_um_jk2102_tb();
         clk_tb = 0;
         rst_n_tb = 0;
         ena_tb = 0;
-        ui_in_tb = 8'h1A;
+        ui_in_tb = 8'h0A;
         sda_out_tb = 1'b1;
         scl_out_tb = 1'b1;
         #10;
