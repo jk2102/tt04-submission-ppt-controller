@@ -8,6 +8,9 @@ module register_map (
     input clk,              // clock signal
     input rstn,
 
+    // back-up option
+    input run_on_reset,
+
     // PPT side ports
     output [4:0]    clk_div,
     output [13:0]   period,
@@ -43,7 +46,7 @@ module register_map (
             WIDTH_H     <= 6'd0;      // WIDTH_H  --> 0 
             COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
             //COUNT_H     <= 8'd0;      // COUNT_H  --> 
-            RUN         <= 1'd1;      // RUN      --> 1 --> fallback if I2C not working
+            RUN         <= run_on_reset;      // RUN      --> 1 --> fallback if I2C not working
             COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
             //COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
             DONE        <= 1'd0;     // DONE

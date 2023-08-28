@@ -60,6 +60,8 @@ module tt_um_jk2102 (
         .clk            (scl),
         .rstn           (rstn_int),
 
+        .run_on_reset   (ui_in[4]),
+
         // PPT side ports
         .clk_div        (clk_div),
         .period         (period),
