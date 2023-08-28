@@ -8,7 +8,6 @@ module register_map (
     input clk,              // clock signal
     input rstn,
 
-    // back-up option
     input run_on_reset,
 
     // PPT side ports
@@ -35,7 +34,7 @@ module register_map (
     //reg [7:0] COUNT_DONE_H;
     reg       DONE;
 
-    always @(posedge clk or negedge rstn) begin
+    always @(negedge clk or negedge rstn) begin
         if (!rstn) begin
             // deafult values
             // ensure basic functionality if I2C interface is not working
@@ -46,7 +45,7 @@ module register_map (
             WIDTH_H     <= 6'd0;      // WIDTH_H  --> 0 
             COUNT_L     <= 8'd16;     // COUNT_L  --> 16 firings
             //COUNT_H     <= 8'd0;      // COUNT_H  --> 
-            RUN         <= run_on_reset;      // RUN      --> 1 --> fallback if I2C not working
+            RUN         <= run_on_reset;      // RUN      --> 1 --> fallback if I2C not working with run_override
             COUNT_DONE_L <= 8'd0;      // COUNT_DONE_L 
             //COUNT_DONE_H <= 8'd0;      // COUNT_DONE_H 
             DONE        <= 1'd0;     // DONE

@@ -20,7 +20,7 @@ module tt_um_jk2102 (
 
     wire reg_write, run_ppt, done, pulse_out;
     wire [4:0] clk_div;
-
+    
 
     // if not enable, keep in reset
     wire rstn_int;
