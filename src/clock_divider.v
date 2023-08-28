@@ -7,12 +7,12 @@ module clock_divider(
     output wire clk_out     // Divided clock output
 );
 
-reg [25:0] counter; // 26-bit counter --> enough to divide 50 MHz to 1 Hz
+reg [20:0] counter; // 26-bit counter --> enough to divide 50 MHz to 1 Hz
 reg [4:0] sel_r; 
 
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-        counter <= 26'b0;  // Reset the counter when reset goes low
+        counter <= 21'b0;  // Reset the counter when reset goes low
         sel_r <= 5'd9;
     end else begin
         counter <= counter + 1'b1; // Increment the counter on every rising edge of the clock
@@ -20,6 +20,6 @@ always @(posedge clk or negedge rst_n) begin
     end
 end
 
-assign clk_out = counter[(sel_r < 5'd26) ? sel_r : 5'd25]; // Output the bit selected by the "sel" input
+assign clk_out = counter[(sel_r < 5'd21) ? sel_r : 5'd20]; // Output the bit selected by the "sel" input
 
 endmodule

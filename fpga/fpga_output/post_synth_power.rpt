@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-| Date             : Mon Aug 28 15:29:47 2023
+| Date             : Mon Aug 28 15:58:55 2023
 | Host             : radna_stanica running 64-bit major release  (build 9200)
 | Command          : report_power -file ./fpga_output/post_synth_power.rpt
 | Design           : fpga_top_lvl
@@ -30,7 +30,7 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.074        |
+| Total On-Chip Power (W)  | 0.073        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
 | Dynamic (W)              | 0.002        |
@@ -53,17 +53,17 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |      426 |       --- |             --- |
-|   LUT as Logic |    <0.001 |      146 |     20800 |            0.70 |
+| Slice Logic    |    <0.001 |      408 |       --- |             --- |
+|   LUT as Logic |    <0.001 |      132 |     20800 |            0.63 |
 |   CARRY4       |    <0.001 |       18 |      8150 |            0.22 |
-|   Register     |    <0.001 |      205 |     41600 |            0.49 |
+|   Register     |    <0.001 |      192 |     41600 |            0.46 |
 |   BUFG         |    <0.001 |        3 |        32 |            9.38 |
 |   F7/F8 Muxes  |    <0.001 |        4 |     32600 |            0.01 |
-|   Others       |     0.000 |       11 |       --- |             --- |
-| Signals        |    <0.001 |      400 |       --- |             --- |
+|   Others       |     0.000 |       10 |       --- |             --- |
+| Signals        |    <0.001 |      350 |       --- |             --- |
 | I/O            |    <0.001 |       24 |       106 |           22.64 |
 | Static Power   |     0.072 |          |           |                 |
-| Total          |     0.074 |          |           |                 |
+| Total          |     0.073 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 

@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-| Date         : Mon Aug 28 15:30:18 2023
+| Date         : Mon Aug 28 15:59:24 2023
 | Host         : radna_stanica running 64-bit major release  (build 9200)
 | Command      : report_timing -sort_by group -max_paths 100 -path_type summary -file ./fpga_output/post_route_timing.rpt
 | Design       : fpga_top_lvl
@@ -13,19 +13,19 @@ Timing Report
 
 Startpoint                     Endpoint                       Slack(ns)     
 ----------------------------------------------------------------------------
-counter_reg[0]/C               counter_reg[9]/D               6.690         
-counter_reg[1]/C               counter_reg[4]/D               6.794         
+counter_reg[1]/C               counter_reg[6]/D               6.442         
+counter_reg[1]/C               counter_reg[5]/D               6.543         
+counter_reg[1]/C               counter_reg[9]/D               6.574         
+counter_reg[1]/C               counter_reg[8]/D               6.609         
+counter_reg[1]/C               counter_reg[10]/D              6.719         
+counter_reg[1]/C               counter_reg[4]/D               6.725         
+counter_reg[1]/C               counter_reg[11]/D              6.751         
 counter_reg[1]/C               counter_reg[2]/D               6.798         
-counter_reg[1]/C               counter_reg[3]/D               6.812         
-counter_reg[1]/C               counter_reg[5]/D               6.812         
-counter_reg[0]/C               counter_reg[10]/D              6.952         
-counter_reg[0]/C               counter_reg[8]/D               7.015         
-counter_reg[0]/C               counter_reg[6]/D               7.069         
-counter_reg[0]/C               counter_reg[11]/D              7.144         
-counter_reg[1]/C               clk_32768Hz_reg/D              7.201         
-counter_reg[0]/C               counter_reg[1]/D               7.230         
-counter_reg[0]/C               counter_reg[7]/D               7.238         
-counter_reg[0]/C               counter_reg[0]/D               7.787         
+counter_reg[1]/C               counter_reg[7]/D               6.805         
+counter_reg[1]/C               counter_reg[3]/D               6.814         
+counter_reg[1]/C               clk_32768Hz_reg/D              7.208         
+counter_reg[1]/C               counter_reg[1]/D               7.260         
+counter_reg[0]/C               counter_reg[0]/D               8.609         
 
 
 
