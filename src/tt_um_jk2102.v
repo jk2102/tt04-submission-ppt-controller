@@ -12,6 +12,8 @@ module tt_um_jk2102 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+
+    
     // wires
     wire scl, sda, sda_out;
 
